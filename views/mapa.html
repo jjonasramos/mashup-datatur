@@ -1,0 +1,100 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">Página Inicial</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Mapa</li>
+  </ol>
+</nav>
+
+<div class="row btn-filtros qv-obj" data-toggle="collapse" data-target="#filCollapse" aria-expanded="false" aria-controls="filCollapse">
+  <span class="lui-icon lui-icon--filter seta" aria-hidden="true"></span>
+  <label class="titulo" >Filtros</label>
+  <span class="lui-icon lui-icon--filter seta" aria-hidden="true"></span>
+</div>
+
+<div class="collapse qv-obj" id="filCollapse">
+  <div id="filtros" class="col-sm-12" style="height: 300px;">Carregando...</div>
+</div>
+
+<div class="collapse" id="showDossieModal">
+    <div id="button_cond">
+      <a id="btn_dossieMun" class="btn btn-primary btn-lg" href="#/mapa/dossieMunicipio" role="button">
+          Visualizar dossiê do município
+      </a>
+    </div>
+</div>
+
+<div id="selection-box">
+  <a class="btn btn-primary botao botao-all" role="button" ng-click="limparCamadas()">Limpar camadas</a>
+  <a class="btn btn-primary botao" role="button" onclick="appMapa.clearAll()">Limpar filtros</a>
+
+  <span class="btn btn-primary lui-icon lui-icon--clear-selections icon-btn botao-all" ng-click="limparCamadas()" role="button"></span>
+  <span class="btn btn-primary lui-icon lui-icon--clear-filter icon-btn" onclick="appMapa.clearAll()" role="button"></span>
+
+  <div id="Selecoes" class="qvplaceholder" style="width: 100%;"></div>
+</div>
+
+<div class="row" >
+      <div id="camadas" class="col-12 col-xl-2 qv-obj">
+        <label class="titulo">Camadas</label>
+        <div class="accordion" id="accordion_Camadas">
+            <div class="" ng-repeat="camada in camadas">
+              <button class="btn btn-link btn-camada" type="button" data-toggle="collapse" data-target="#col_{{camada.tipo}}" aria-expanded="false" aria-controls="col_{{camada.tipo}}">
+                  <span class="lui-icon lui-icon--arrow-right" aria-hidden="true"></span>{{camada.tipo}}
+                  <span class="badge badge-success" ng-show="camada.count > 0">{{camada.count}}</span>
+              </button>
+              <div id="col_{{camada.tipo}}" class="collapse check-box" data-parent="#accordion_Camadas">
+                <form id="camadas">
+                  <ul>
+                    <li ng-repeat="item in camada.items">
+                      <span class="lui-icon lui-icon--info seta seta-filter info-camada" aria-hidden="true"></span>
+                      <span ng-click="setTemplate(this)" ng-style="{'visibility': item.template != null ?'visible':'hidden'}" data-target="#filterModal" data-toggle="modal" aria-controls="filterModal" class="lui-icon lui-icon--filter seta seta-filter" aria-hidden="true"></span>
+                      <label>
+                        <input type="checkbox" ng-model="item.check" ng-click="checkCamada(this)">{{item.nome}}
+                      </label>
+                  </li>
+                  </ul>
+                </form>
+              </div>
+            </div>
+        </div>
+      </div>
+
+      <div class="card col-12 col-xl-10 qv-obj" style="height: 800px">
+          <div class="card-header">
+            <div class="row align-items-center">
+              <div class="col titleMap">
+  
+                <h4 class="card-header-title">
+                  Mapa
+                </h4>
+  
+              </div>
+              <div class="col-auto" ng-model="mapa">
+                
+                <a href="#exportModal" data-toggle="modal" ng-click="export(0, this.mapa)" class="btn btn-sm btn-white"> <span class="lui-icon lui-icon--image" aria-hidden="true"></span></a>
+                <a href="#exportModal" data-toggle="modal" ng-click="export(2, this.mapa)" class="btn btn-sm btn-white"> <span class="lui-icon lui-icon--export" aria-hidden="true"></span></a>
+
+                <a href="#mapaModal" data-toggle="modal" ng-click="fullScreen('mapa_fullscreen', 'cuEuHj')" role="button" class="btn btn-sm btn-white"> <span class="lui-icon lui-icon--general-data-class" aria-hidden="true"></span></a>
+              </div>
+            </div>
+          </div>
+          
+          <div id="mapa" class="" style="height: 800px;">Carregando...</div>
+      </div>
+</div>
+
+<div class="modal" id="filterModal" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Filtros</h5>
+        <button ng-click="closeModal()" type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div ng-include="layout" id="result"></div>
+      </div>
+    </div>
+  </div>
+</div>
